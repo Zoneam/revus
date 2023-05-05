@@ -1,3 +1,3 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Popup script running');
+    console.log('Popup script');
   });
