@@ -1,0 +1,27 @@
+{
+    "name": "Revus",
+    "version": "1.0",
+    "description": "Smart Amazon Reviews",
+    "manifest_version": 3,
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "48": "icon48.png"
+      }
+    },
+    "permissions": ["activeTab"],
+    "background": {
+        "service_worker": "background.js"
+      },
+    "content_scripts": [
+      {
+        "matches": ["https://www.amazon.com/*", "http://www.amazon.com/*"],
+        "js": ["script.js"],
+        "css": ["style.css"]
+      }
+    ],
+    "icons": {
+      "48": "icon48.png"
+    }
+  }
+  
