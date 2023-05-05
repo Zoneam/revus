@@ -1,0 +1,11 @@
+#review {
+    background-color: lightgrey;
+    color: white;
+    font-size: 2rem;
+    padding: 2rem;
+    height: 100px;
+    border-radius: 5px;
+    border: 1px solid #464646;
+    text-align: center;
+    text-shadow: 3px 5px 5px #474747;
+}
