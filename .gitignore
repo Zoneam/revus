@@ -1,0 +1,4 @@
+/dist
+
+.env:
+    cp .env.example .env

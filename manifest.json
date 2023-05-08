@@ -3,25 +3,22 @@
     "version": "1.0",
     "description": "Smart Amazon Reviews",
     "manifest_version": 3,
-    "action": {
-      "default_popup": "popup.html",
-      "default_icon": {
-        "48": "icon48.png"
-      }
+    "icons": {
+      "48": "icon48.png"
     },
-    "permissions": ["activeTab"],
+    "action": {
+      "default_icon": "icon48.png",
+      "default_popup": "popup.html"
+    },
     "background": {
-        "service_worker": "background.js"
-      },
+      "service_worker": "background.js"
+    },
     "content_scripts": [
       {
         "matches": ["https://www.amazon.com/*", "http://www.amazon.com/*"],
         "js": ["script.js"],
         "css": ["style.css"]
       }
-    ],
-    "icons": {
-      "48": "icon48.png"
-    }
+    ]
   }
   
