@@ -31,7 +31,6 @@ window.addEventListener("load", async function () {
 });
 
 async function summarizeReviews(reviews) {
-  console.log(JSON.stringify(reviews));
   const url = 'https://z6xdsaipm1.execute-api.us-east-1.amazonaws.com/dev/revus';
   const headers = {
     'Content-Type': 'application/json',
