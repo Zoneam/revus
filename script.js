@@ -1,5 +1,17 @@
 import './script.css';
 
+let target = document.getElementById('imageBlock');
+console.log('script.js loaded', target);
+
+
+if (target) { // This means the target is visible
+    // Send a message to the service worker
+    chrome.runtime.sendMessage({targetVisible: true});
+} else {
+    // Send a message to the service worker
+    chrome.runtime.sendMessage({targetVisible: false});
+}
+
 
 chrome.runtime.onMessage.addListener(
   async function(request, sender, sendResponse) {

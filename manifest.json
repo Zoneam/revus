@@ -3,6 +3,7 @@
     "version": "1.0",
     "description": "Smart Amazon Reviews",
     "manifest_version": 3,
+    "permissions": ["storage", "scripting", "tabs"],
     "icons": {
       "48": "icon48.png"
     },
