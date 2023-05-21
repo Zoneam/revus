@@ -1,10 +1,13 @@
+import './script.css';
+
+
 chrome.runtime.onMessage.addListener(
   async function(request, sender, sendResponse) {
     if (request.greeting === "summarize") {
         let reviewDataSet = '';
         const imageDiv = document.getElementById("imageBlock");
       
-        // Get all the reviews
+        // Scrape all the reviews
         const reviewSpans = document.querySelectorAll(".review-text-content > span");
       
         reviewSpans.forEach((span, idx) => {
@@ -28,7 +31,7 @@ chrome.runtime.onMessage.addListener(
     }
 });
 
-// Summarize reviews using the Revus Lambda on AWS
+// Summarize reviews using the Revus Lambda Proxy on AWS
 async function summarizeReviews(reviews, maxRetries = 3) {
   let reviewsString;
   const url = 'https://z6xdsaipm1.execute-api.us-east-1.amazonaws.com/dev/revus';

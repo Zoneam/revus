@@ -10,7 +10,6 @@ module.exports = {
     background: './background.js',
     script: './script.js',
     popup: './popup.js',
-    style: './style.css'
   },
   output: {
     filename: '[name].js',

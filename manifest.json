@@ -17,7 +17,7 @@
       {
         "matches": ["https://www.amazon.com/*", "http://www.amazon.com/*"],
         "js": ["script.js"],
-        "css": ["style.css"]
+        "css": ["script.css"]
       }
     ]
   }
