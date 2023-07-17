@@ -11,7 +11,8 @@ if (target) {
   summaryBtnContainer.appendChild(summaryBtn);
   target.appendChild(summaryBtnContainer);
   summaryBtn.addEventListener('click', async function() {
-  
+  summaryBtn.innerText = `Loading...`;
+  summaryBtn.disabled = true;
           let reviewDataSet = '';
           const imageDiv = document.getElementById("imageBlock");
         
@@ -35,6 +36,8 @@ if (target) {
               reviewDiv.innerHTML += `<li class="list-problem">⭐ ${summary}</li>`;
             }
             imageDiv.appendChild(reviewDiv);
+            summaryBtn.disabled = false;
+            summaryBtn.innerText = 'Summarize Again';
           }
   });
 } else {
