@@ -1,47 +1,49 @@
 import './script.css';
-
+const { log } = console;
 let target = document.getElementById('imageBlock');
-console.log('script.js loaded', target);
 
-
-if (target) { // This means the target is visible
-    // Send a message to the service worker
-    chrome.runtime.sendMessage({targetVisible: true});
+if (target) { 
+  const summaryBtnContainer = document.createElement('div');
+  const summaryBtn = document.createElement('button');
+  summaryBtnContainer.setAttribute('id', 'summaryBtnContainer');
+  summaryBtn.className = 'summaryBtn';
+  summaryBtn.innerText = 'Summarize Reviews';
+  summaryBtnContainer.appendChild(summaryBtn);
+  target.appendChild(summaryBtnContainer);
+  summaryBtn.addEventListener('click', async function() {
+  summaryBtn.innerText = `Summarizing...`;
+  summaryBtn.disabled = true;
+          let reviewDataSet = '';
+          const imageDiv = document.getElementById("imageBlock");
+        
+          // Scrape all reviews
+          const reviewSpans = document.querySelectorAll(".review-text-content > span");
+        
+          reviewSpans.forEach((span, idx) => {
+            const review = span.textContent.trim();
+            reviewDataSet += `${review}\n\n`;
+          });
+        
+          // Summarize the reviewDataSet with AI
+          const summary = await summarizeReviews({ reviews: reviewDataSet });
+          
+          // Add result to the DOM under image
+          if (imageDiv) {
+            const reviewDiv = document.createElement("div");
+            reviewDiv.setAttribute("id", "review");
+        
+            if (summary.length){
+              reviewDiv.innerHTML += `<li class="list-problem">⭐ ${summary}</li>`;
+            }
+            imageDiv.appendChild(reviewDiv);
+            summaryBtn.disabled = false;
+            summaryBtn.innerText = 'Summarize Again';
+          }
+  });
 } else {
-    // Send a message to the service worker
-    chrome.runtime.sendMessage({targetVisible: false});
+  log('No reviews found!');
 }
 
-
-chrome.runtime.onMessage.addListener(
-  async function(request, sender, sendResponse) {
-    if (request.greeting === "summarize") {
-        let reviewDataSet = '';
-        const imageDiv = document.getElementById("imageBlock");
-      
-        // Scrape all the reviews
-        const reviewSpans = document.querySelectorAll(".review-text-content > span");
-      
-        reviewSpans.forEach((span, idx) => {
-          const review = span.textContent.trim();
-          reviewDataSet += `Review ${idx + 1}: ${review}\n`;
-        });
-      
-        // Summarize the reviewDataSet with AI
-        const summary = await summarizeReviews({ reviews: reviewDataSet });
-        
-        // Add result to the DOM under image
-        if (imageDiv) {
-          const reviewDiv = document.createElement("div");
-          reviewDiv.setAttribute("id", "review");
-      
-          if (summary.length){
-            reviewDiv.innerHTML += `<li class="list-problem">⭐ ${summary}</li>`;
-          }
-          imageDiv.appendChild(reviewDiv);
-        }
-    }
-});
 
 // Summarize reviews using the Revus Lambda Proxy on AWS
 async function summarizeReviews(reviews, maxRetries = 3) {
