@@ -16,7 +16,7 @@ if (target) {
           let reviewDataSet = '';
           const imageDiv = document.getElementById("imageBlock");
         
-          // Scrape all reviews
+          // Scrape all reviews from Amazon
           const reviewSpans = document.querySelectorAll(".review-text-content > span");
         
           reviewSpans.forEach((span, idx) => {
@@ -46,8 +46,7 @@ if (target) {
 
 
 // Summarize reviews using the Revus Lambda Proxy on AWS
-async function summarizeReviews(reviews, maxRetries = 3) {
-  let reviewsString;
+const summarizeReviews = async (reviews, maxRetries = 3) => {
   const url = 'https://z6xdsaipm1.execute-api.us-east-1.amazonaws.com/dev/revus';
   const headers = {
     'Content-Type': 'application/json',
@@ -58,6 +57,7 @@ async function summarizeReviews(reviews, maxRetries = 3) {
     return;
   }
 
+  let reviewsString;
   try {
     reviewsString = JSON.stringify(reviews);
   } catch (error) {
@@ -68,32 +68,33 @@ async function summarizeReviews(reviews, maxRetries = 3) {
     };
   }
 
+  const handleServerError = (error, attempt) => {
+    console.error(`Attempt ${attempt} ERROR:`, error.message);
+    if (attempt >= maxRetries || !error.message.startsWith('Response error') || parseInt(error.message.split(': ')[1]) < 500) {
+      throw error;
+    }
+  };
+
   for (let i = 0; i <= maxRetries; i++) {
     try {
       const response = await fetch(url, {
         method: 'POST',
-        headers: headers,
+        headers,
         body: reviewsString
       });
 
-      if (response.ok) {
-        return response.json();
-      } else {
+      if (!response.ok) {
         throw new Error(`Response error with status code: ${response.status}`);
       }
-    } catch (error) {
-      console.error('Attempt', i + 1, 'ERROR====', error);
 
-      // Only retry for 5xx server errors
-      if (i < maxRetries && error.message.startsWith('Response error') && parseInt(error.message.split(': ')[1]) >= 500) {
-        continue;
-      } else {
-        // Return or throw the error if the maximum number of retries has been reached, or for non-5xx errors
-        return {
-          error: true,
-          message: `Failed to summarize reviews after ${i + 1} attempts. Error: ${error.message}`
-        };
-      }
+      return await response.json();
+    } catch (error) {
+      handleServerError(error, i + 1);
     }
   }
-}
+
+  return {
+    error: true,
+    message: `Failed to summarize reviews after ${maxRetries + 1} attempts.`
+  };
+};
