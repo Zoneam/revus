@@ -1,24 +1,28 @@
+// main.js
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '/popup.css';
+import { toggleForms, displayMessage } from './ui-utils.js';
+import { checkLoginStatus } from './storage-service.js';
+import { loginUser, signupUser } from './api-service.js';
 
-// console.log('popup.js loaded');
+document.addEventListener('DOMContentLoaded', function () {
+    checkLoginStatus();
+    toggleForms(true);
 
-// import './popup.css';
-// let getSummaryBtn = document.getElementById('getSummaryBtn');
-// // When the popup is opened, check the stored state
-// chrome.storage.local.get('targetVisible', (result) => {
-//   if (result.targetVisible) {
-//       // The target is visible, activate the button
-//       getSummaryBtn.innerText = 'Summarize Reviews';
-//   } else {
-//       getSummaryBtn.innerText = 'No Reviews Found'; 
-//   }
-// });
+    document.getElementById('showLogin').addEventListener('click', () => toggleForms(true));
+    document.getElementById('showRegister').addEventListener('click', () => toggleForms(false));
 
+    document.getElementById("loginForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        await loginUser(username, password);
+    });
 
-// if (!getSummaryBtn.hasListener) {
-//   getSummaryBtn.addEventListener('click', function() {
-//     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-//       chrome.tabs.sendMessage(tabs[0].id, {message: "summarize"});
-//     });
-//   });
-//   getSummaryBtn.hasListener = true;
-// }
+    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('signupPassword').value;
+        await signupUser(email, password);
+    });
+});
