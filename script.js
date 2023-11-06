@@ -47,7 +47,7 @@ if (target) {
 
 // Summarize reviews using the Revus Lambda Proxy on AWS
 const summarizeReviews = async (reviews, maxRetries = 3) => {
-  const url = 'https://z6xdsaipm1.execute-api.us-east-1.amazonaws.com/dev/revus';
+  const url = 'https://frmme9pn2h.execute-api.us-east-1.amazonaws.com/stage/revus';
   const headers = {
     'Content-Type': 'application/json',
   };
