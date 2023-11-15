@@ -11,7 +11,7 @@ if (target) {
   summaryBtnContainer.appendChild(summaryBtn);
   target.appendChild(summaryBtnContainer);
   summaryBtn.addEventListener('click', async function() {
-  summaryBtn.innerText = `Summarizing...`;
+  summaryBtn.innerText = `Summarizing......`;
   summaryBtn.disabled = true;
           let reviewDataSet = '';
           const imageDiv = document.getElementById("imageBlock");
