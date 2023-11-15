@@ -6,8 +6,9 @@ import { checkLoginStatus } from './storage-service.js';
 import { loginUser, signupUser } from './api-service.js';
 
 document.addEventListener('DOMContentLoaded', function () {
-    checkLoginStatus();
-    toggleForms(true);
+        checkLoginStatus();
+        toggleForms(true);
+
 
     document.getElementById('showLogin').addEventListener('click', () => toggleForms(true));
     document.getElementById('showRegister').addEventListener('click', () => toggleForms(false));

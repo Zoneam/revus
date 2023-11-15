@@ -23,7 +23,7 @@ if (target) {
             const review = span.textContent.trim();
             reviewDataSet += `${review}\n\n`;
           });
-        
+        console.log('reviewDataSet', reviewDataSet);
           // Summarize the reviewDataSet with AI
           const summary = await summarizeReviews({ reviews: reviewDataSet });
           
@@ -48,8 +48,22 @@ if (target) {
 // Summarize reviews using the Revus Lambda Proxy on AWS
 const summarizeReviews = async (reviews, maxRetries = 3) => {
   const url = 'https://frmme9pn2h.execute-api.us-east-1.amazonaws.com/stage/revus';
+  // Retrieve token from Chrome storage
+  const getToken = () => {
+    return new Promise((resolve, reject) => {
+      chrome.storage.local.get(['token'], function(result) {
+        if (chrome.runtime.lastError) {
+          reject(`Error retrieving token: ${chrome.runtime.lastError.message}`);
+        } else {
+          resolve(result.token);
+        }
+      });
+    });
+  };
+  const token = await getToken();
   const headers = {
     'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
   };
 
   if (reviews.length === 0) {
