@@ -13,7 +13,7 @@ if (target) {
   summaryBtn.addEventListener('click', async function() {
   summaryBtn.innerText = `Summarizing......`;
   summaryBtn.disabled = true;
-          let reviewDataSet = '';
+          let reviewDataSet = [];
           const imageDiv = document.getElementById("imageBlock");
         
           // Scrape all reviews from Amazon
@@ -21,19 +21,20 @@ if (target) {
         
           reviewSpans.forEach((span, idx) => {
             const review = span.textContent.trim();
-            reviewDataSet += `${review}\n\n`;
+            reviewDataSet.push(review);
           });
-        console.log('reviewDataSet', reviewDataSet);
           // Summarize the reviewDataSet with AI
           const summary = await summarizeReviews({ reviews: reviewDataSet });
-          
+          console.log(summary);
           // Add result to the DOM under image
           if (imageDiv) {
             const reviewDiv = document.createElement("div");
             reviewDiv.setAttribute("id", "review");
-        
+            reviewDiv.innerHTML += `<h3>Summary</h3>`;
             if (summary.length){
-              reviewDiv.innerHTML += `<li class="list-problem">⭐ ${summary}</li>`;
+              summary.split('\n').forEach((summary) => {
+                  reviewDiv.innerHTML += `<li class="list-problem">${summary}</li>`;
+                });
             }
             imageDiv.appendChild(reviewDiv);
             summaryBtn.disabled = false;
@@ -88,7 +89,6 @@ const summarizeReviews = async (reviews, maxRetries = 3) => {
       throw error;
     }
   };
-
   for (let i = 0; i <= maxRetries; i++) {
     try {
       const response = await fetch(url, {
@@ -100,7 +100,6 @@ const summarizeReviews = async (reviews, maxRetries = 3) => {
       if (!response.ok) {
         throw new Error(`Response error with status code: ${response.status}`);
       }
-
       return await response.json();
     } catch (error) {
       handleServerError(error, i + 1);
