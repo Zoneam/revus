@@ -7,9 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: {
-    background: './background.js',
     script: './script.js',
-    popup: './popup.js',
   },
   output: {
     filename: '[name].js',
@@ -36,11 +34,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './popup.html',
-      filename: 'popup.html',
-      chunks: ['popup'],
-    }),
     new DotenvPlugin(),
     new CopyWebpackPlugin({
       patterns: [

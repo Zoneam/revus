@@ -12,16 +12,13 @@
     },
     "action": {
       "default_icon": "icon48.png",
-      "default_popup": "popup.html"
-    },
-    "background": {
-      "service_worker": "background.js"
+      "default_popup": "./dist/popupUI/index.html"
     },
     "content_scripts": [
       {
         "matches": ["https://www.amazon.com/*", "http://www.amazon.com/*"],
-        "js": ["script.js"],
-        "css": ["script.css"]
+        "js": ["./dist/script.js"],
+        "css": ["./dist/script.css"]
       }
     ]
   }

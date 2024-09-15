@@ -1,7 +1,7 @@
 import './script.css';
 const { log } = console;
 let target = document.getElementById('imageBlock');
-
+console.log("Scripting ..........")
 if (target) { 
   const summaryBtnContainer = document.createElement('div');
   const summaryBtn = document.createElement('button');
@@ -24,7 +24,7 @@ if (target) {
             reviewDataSet.push(review);
           });
           // Summarize the reviewDataSet with AI
-          const summary = await summarizeReviews({ reviews: reviewDataSet });
+          const { summary } = await summarizeReviews({ reviews: reviewDataSet });
           console.log(summary);
           // Add result to the DOM under image
           if (imageDiv) {
