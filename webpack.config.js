@@ -8,6 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   entry: {
     script: './script.js',
+    background: './background.js', // Add background.js to your entry
   },
   output: {
     filename: '[name].js',
